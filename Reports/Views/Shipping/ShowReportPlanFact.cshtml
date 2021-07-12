@@ -1,0 +1,79 @@
+﻿@model List<Reports.Models.Shipping>
+@if (Reports.Models.CurrentUser.User != null)
+{
+<div style="display:flex; flex-direction:column">
+    @if (Reports.Models.CurrentUser.User.AccessReport1)
+    {
+
+        using (Html.BeginForm("FilterReportPlanFact", "Shipping", FormMethod.Post))
+        {
+    <div style="display:flex; flex-direction:row">
+        <select id="typeCity" name="TypeCity" class="form-control">
+            <option value="departureCity">Город отправления</option>
+            <option value="arrivalCity">Город прибытия</option>
+        </select>
+        <label for="inputCity" class="sr-only">City</label>
+        <input name="City" type="text" id="inputCity" class="form-control" placeholder="Город" required="">
+        <button style="width:150px" class="btn btn-lg btn-primary btn-block" type="submit">Применить</button>
+        @Html.ActionLink("Сборосить фильтр", "ShowReportPlanFact", "Shipping", new { Class = "btn btn-lg btn-primary btn-block", Style = "width:150px" })
+        @Html.ActionLink("Назад", "Choice", "Shipping", null, new { Class = "btn btn-lg btn-primary btn-block", Style = "width:150px" })
+    </div>
+
+        }
+
+
+        <div class="row" style="margin-top:20px">
+            <div class="col-md-6">
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <tr>
+                            <th>
+                                Город отправления
+                            </th>
+                            <th>
+                                Город прибытия
+                            </th>
+                            <th>
+                                Плановое кол-во перевозок
+                            </th>
+                            <th>
+                                Итого факт
+                            </th>
+                            @for (int i = 1; i < 32; i++)
+                            {
+                                <th>
+                                    @i
+                                </th>
+                            }
+                        </tr>
+                        @foreach (var shipping in Model)
+                        {
+                            <tr>
+                                <td>@shipping.DepartureCity</td>
+                                <td>@shipping.ArrivalCity</td>
+                                <td>@shipping.PlannedShipping</td>
+                                <td>@shipping.ActualShipping</td>
+                                @for (int i = 1; i < 32; i++)
+                                {
+                                    foreach (var countShippingOnDate in shipping.CountShippingOnDates)
+                                    {
+                                        if (countShippingOnDate.DayOfMonth == i)
+                                        {
+                                            <td>@countShippingOnDate.Count</td>
+                                            i++;
+                                        }
+                                    }
+                                    <td></td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+}
