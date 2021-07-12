@@ -1,6 +1,6 @@
 ﻿@model List<Reports.Models.ViewModels.DepartureCityViewModel>
-    <div class="row" style="margin-left:710px">
-        <div class="col-md-4">
+    <div class="row" style="margin-left:635px">
+        <div class="col-md-5">
             <table class="table table-bordered table-hover">
                 <tbody>
                     <tr>
@@ -24,17 +24,17 @@
 <div style="display:flex; flex-direction:column">
     @foreach (var shipping in Model)
     {
-        <div class="container" style="width: 300px; float: left">
+        <div class="container" style="width: 500px; float: left">
             <div>
                 <div v style="display:flex; flex-direction:row">
                     <div class="col-sm">
                         <button class="btn btn-primary dropdown-button">+</button>
                         @shipping.DepartureCity
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm" style="margin-left:40px">
                         @shipping.TotalPlannedShipping
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm" style="margin-left:40px">
                         @shipping.TotalActualShipping
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         <div class="col-sm">
                             @item.PlannedShipping
                         </div>
-                        <div class="col-sm">
+                        <div class="col-sm" style="margin-left:30px">
                             @item.ActualShipping
                         </div>
                     </div>
@@ -62,7 +62,7 @@
             if (e.target.innerText == "+") {
                 var mainDiv = e.target.parentElement.parentElement.parentElement;
                 for (var i = 1; i < mainDiv.children.length; i++) {
-                    mainDiv.children[i].setAttribute("style", "visibility:visible; position:relative;");
+                    mainDiv.children[i].setAttribute("style", "visibility:visible; position:relative; margin-left:15px");
                     var a = mainDiv.children[i].getAttribute("style");
                 }
                 e.target.innerText = "-";
@@ -72,7 +72,7 @@
                 for (var i = 1; i < mainDiv.children.length; i++) {
                     var a = mainDiv.children[i].getAttribute("style");
                     mainDiv.children[i].removeAttribute("style");
-                    mainDiv.children[i].setAttribute("style", "visibility:hidden; position:absolute;");
+                    mainDiv.children[i].setAttribute("style", "visibility:hidden; position:absolute; margin-left:15px");
                 }
                 e.target.innerText = "+";
             }
