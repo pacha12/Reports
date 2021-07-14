@@ -1,80 +1,70 @@
 ﻿@model List<Reports.Models.ViewModels.DepartureCityViewModel>
-    <div class="row" style="margin-left:635px">
-        <div class="col-md-5">
-            <table class="table table-bordered table-hover">
+<div style="display:flex; flex-direction:column;margin-left:635px">
+    @Html.ActionLink("Назад", "Choice", "Shipping", null, new { Class = "btn btn-lg btn-primary btn-block", Style = "width:140px;height:30px;margin-left:15px" })
+    <div class="col-md-5">
+        <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <th>
+                        Город отправления
+                    </th>
+                    <th>
+                        Плановое кол-во перевозок
+                    </th>
+                    <th>
+                        Итого факт
+                    </th>
+                </tr>
+            </tbody>
+            @foreach (var shipping in Model)
+            {
                 <tbody>
                     <tr>
-                        <th>
-                            Город отправления
-                        </th>
-                        <th>
-                            Плановое кол-во перевозок
-                        </th>
-                        <th>
-                            Итого факт
-                        </th>
-                        <th>
-                            @Html.ActionLink("Назад", "Choice", "Shipping", null, new { @class = "btn btn-info" })
-                        </th>
+                        <td class="dropdown-td">
+                            @shipping.DepartureCity
+                        </td>
+                        <td>
+                            @shipping.TotalPlannedShipping
+                        </td>
+                        <td>
+                            @shipping.TotalActualShipping
+                        </td>
                     </tr>
                 </tbody>
-            </table>
-        </div>
+                <tbody id="@shipping.DepartureCity" style="visibility:hidden; position:absolute;background-color:gray">
+                    @foreach (var item in shipping.ArrivalCityDataViewVodels)
+                    {
+                        <tr>
+                            <td>
+                                @item.ArrivalCity
+                            </td>
+                            <td>
+                                @item.PlannedShipping
+                            </td>
+                            <td>
+                                @item.ActualShipping
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            }
+        </table>
     </div>
-<div style="display:flex; flex-direction:column">
-    @foreach (var shipping in Model)
-    {
-        <div class="container" style="width: 500px; float: left">
-            <div>
-                <div v style="display:flex; flex-direction:row">
-                    <div class="col-sm">
-                        <button class="btn btn-primary dropdown-button">+</button>
-                        @shipping.DepartureCity
-                    </div>
-                    <div class="col-sm" style="margin-left:40px">
-                        @shipping.TotalPlannedShipping
-                    </div>
-                    <div class="col-sm" style="margin-left:40px">
-                        @shipping.TotalActualShipping
-                    </div>
-                </div>
-                @foreach (var item in shipping.ArrivalCityDataViewVodels)
-                {
-                    <div class="row children" style="visibility:hidden; position:absolute">
-                        <div class="col-sm">
-                            @item.ArrivalCity
-                        </div>
-                        <div class="col-sm">
-                            @item.PlannedShipping
-                        </div>
-                        <div class="col-sm" style="margin-left:30px">
-                            @item.ActualShipping
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    }
+
 </div>
 <script>
     $(function () {
-        $(".dropdown-button").click(function (e) {
-            if (e.target.innerText == "+") {
-                var mainDiv = e.target.parentElement.parentElement.parentElement;
-                for (var i = 1; i < mainDiv.children.length; i++) {
-                    mainDiv.children[i].setAttribute("style", "visibility:visible; position:relative; margin-left:15px");
-                    var a = mainDiv.children[i].getAttribute("style");
-                }
-                e.target.innerText = "-";
+        $(".dropdown-td").click(function (e) {
+            var departureCity = e.target.innerText;
+            var element = document.getElementById(departureCity);
+            if (element.style.position == "absolute") {
+                element.style.visibility = "visible";
+                element.style.position = "relative";
             }
             else {
-                var mainDiv = e.target.parentElement.parentElement.parentElement;
-                for (var i = 1; i < mainDiv.children.length; i++) {
-                    var a = mainDiv.children[i].getAttribute("style");
-                    mainDiv.children[i].removeAttribute("style");
-                    mainDiv.children[i].setAttribute("style", "visibility:hidden; position:absolute; margin-left:15px");
-                }
-                e.target.innerText = "+";
+                element.style.visibility = "hidden";
+                element.style.position = "absolute";
             }
         });
     });
